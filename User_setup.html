@@ -1,0 +1,237 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathQuest: User Setup</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <form id="userForm">
+        <label for="name">Enter your name:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="grade">Select your grade:</label>
+        <select id="grade" name="grade" required>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+        </select>
+        
+        <label>Select an avatar:</label>
+        <div class="avatar-selection">
+            <img src="profile2.jpg" id="avatar1" onclick="selectAvatar('avatar1')" class="avatar">
+            <img src="profile3.jpg" id="avatar2" onclick="selectAvatar('avatar2')" class="avatar">
+            <img src="profile4.jpg" id="avatar3" onclick="selectAvatar('avatar3')" class="avatar">
+        </div>
+        
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script src="script.js"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Quest: Cadet Registration</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #00b894;
+            --accent-color: #fd79a8;
+            --background-color: #1e272e;
+            --text-color: #dfe6e9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 340deg,
+                var(--accent-color) 340deg 360deg
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+
+        .avatar-selection {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .avatar:hover, .avatar.selected {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--background-color);
+            padding: 0.8rem 1.5rem;
+            margin-top: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cosmic Cadet Registration</h1>
+        <form id="userForm">
+            <label for="name">Enter your callsign:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="grade">Select your rank:</label>
+            <select id="grade" name="grade" required>
+                <option value="10">Ensign (Grade 10)</option>
+                <option value="11">Lieutenant (Grade 11)</option>
+                <option value="12">Commander (Grade 12)</option>
+            </select>
+            
+            <label>Select your space avatar:</label>
+            <div class="avatar-selection">
+                <img src="profile2.jpg" id="avatar1" onclick="selectAvatar('avatar1')" class="avatar" alt="Space Explorer">
+                <img src="profile3.jpg" id="avatar2" onclick="selectAvatar('avatar2')" class="avatar" alt="Cosmic Pilot">
+                <img src="profile4.jpg" id="avatar3" onclick="selectAvatar('avatar3')" class="avatar" alt="Galactic Scientist">
+            </div>
+            
+            <button type="submit">Launch Mission</button>
+        </form>
+    </div>
+    
+    <script>
+        let currentUser = {};
+
+        function selectAvatar(avatarId) {
+            currentUser.avatar = avatarId;
+            document.querySelectorAll('.avatar').forEach(avatar => {
+                avatar.classList.remove('selected');
+            });
+            document.getElementById(avatarId).classList.add('selected');
+        }
+
+        function submitUserForm(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const grade = document.getElementById('grade').value;
+            
+            if (!name || !grade || !currentUser.avatar) {
+                alert('Please fill in all fields and select an avatar.');
+                return;
+            }
+            
+            currentUser = { name, grade, avatar: currentUser.avatar, points: 0 };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            window.location.href = 'diagnostic.html';
+        }
+
+        document.getElementById('userForm').addEventListener('submit', submitUserForm);
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teen Quest: The Cosmic Challenge</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #00b894;
+            --accent-color: #fd79a8;
+            --background-color: #1e272e;
+            --text-color: #dfe6e9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(44, 62, 80, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg 340deg,
+                var(--accent-color) 340deg 360deg
+            );
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            border: none;
+            color: var(--background-color);
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #game-container {
+            display: none;
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+        }
+
+        #player {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .obstacle {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-color);
+            position: absolute;
+            border-radius: 10px;
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        .reward {
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary-color);
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 1s infinite alternate;
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        #quiz-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .stars {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: white;
+            z-index: 1;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-page" class="container">
+        <h1>Cosmic Quest</h1>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button onclick="login()">Launch</button>
+        <button onclick="showRegistration()">New Cadet</button>
+        <p id="login-error" class="error-message"></p>
+    </div>
+
+    <div id="register-page" class="container" style="display: none;">
+        <h1>Join the Fleet</h1>
+        <input type="text" id="register-username" placeholder="Choose a Callsign" required>
+        <input type="password" id="register-password" placeholder="Set Access Code" required>
+        <input type="password" id="register-confirm-password" placeholder="Confirm Access Code" required>
+        <button onclick="register()">Enlist</button>
+        <button onclick="showLogin()">Back to Base</button>
+        <p id="register-error" class="error-message"></p>
+    </div>
+
+    <script>
+        // User management
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = null;
+    
+        function showRegistration() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('register-page').style.display = 'block';
+        }
+    
+        function showLogin() {
+            document.getElementById('register-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+        }
+    
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const errorElement = document.getElementById('register-error');
+    
+            if (password !== confirmPassword) {
+                errorElement.textContent = "Access codes do not match.";
+                return;
+            }
+    
+            if (users[username]) {
+                errorElement.textContent = "Callsign already exists.";
+                return;
+            }
+    
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            errorElement.textContent = "Enlistment successful. Prepare for launch!";
+            setTimeout(showLogin, 1500);
+        }
+    
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+    
+            if (users[username] && users[username] === password) {
+                currentUser = username;
+                // Redirect to the setup page
+                window.location.href = 'User_setup.html';
+            } else {
+                errorElement.textContent = "Invalid callsign or access code.";
+            }
+        }
+    </script>
+    </body>
+    </html>
+
+    <!-- <div id="home-page" class="container" style="display: none;">
+        <h1>Mission Control</h1>
+        <h2 id="welcome-message"></h2>
+        <button onclick="startGame()">Begin Mission</button>
+        <button onclick="logout()">Return to Base</button>
+    </div>
+
+    <div id="game-container">
+        <div id="player"></div>
+        <div id="score">Score: 0</div>
+        <div id="quiz-container">
+            <h2 id="question"></h2>
+            <div id="options"></div>
+        </div>
+    </div>
+
+    <script>
+        // User management
+        let users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = null;
+
+        function showRegistration() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('register-page').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('register-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+        }
+
+        function register() {
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const errorElement = document.getElementById('register-error');
+
+            if (password !== confirmPassword) {
+                errorElement.textContent = "Access codes do not match.";
+                return;
+            }
+
+            if (users[username]) {
+                errorElement.textContent = "Callsign already exists.";
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            errorElement.textContent = "Enlistment successful. Prepare for launch!";
+            setTimeout(showLogin, 1500);
+        }
+
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+
+            if (users[username] && users[username] === password) {
+                currentUser = username;
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('home-page').style.display = 'block';
+                document.getElementById('welcome-message').textContent = `Welcome, Cadet ${currentUser}!`;
+            } else {
+                errorElement.textContent = "Invalid callsign or access code.";
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'block';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-error').textContent = '';
+        }
+
+        // Game logic
+        let score = 0;
+        let playerPos = { x: 0, y: 0 };
+        const obstacles = [];
+        const rewards = [];
+        let gameInterval;
+
+        function startGame() {
+            if (!currentUser) {
+                alert("You must be cleared for launch. Please log in.");
+                return;
+            }
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+            initializeGame();
+        }
+
+        function initializeGame() {
+            playerPos = { x: 380, y: 280 };
+            updatePlayerPosition();
+            createObstacles();
+            createRewards();
+            createStars();
+            gameInterval = setInterval(gameLoop, 50);
+            document.addEventListener('keydown', movePlayer);
+        }
+
+        function updatePlayerPosition() {
+            const player = document.getElementById('player');
+            player.style.left = playerPos.x + 'px';
+            player.style.top = playerPos.y + 'px';
+        }
+
+        function createObstacles() {
+            for (let i = 0; i < 5; i++) {
+                const obstacle = document.createElement('div');
+                obstacle.className = 'obstacle';
+                obstacle.style.left = Math.random() * 740 + 'px';
+                obstacle.style.top = Math.random() * 540 + 'px';
+                document.getElementById('game-container').appendChild(obstacle);
+                obstacles.push(obstacle);
+            }
+        }
+
+        function createRewards() {
+            for (let i = 0; i < 3; i++) {
+                const reward = document.createElement('div');
+                reward.className = 'reward';
+                reward.style.left = Math.random() * 770 + 'px';
+                reward.style.top = Math.random() * 570 + 'px';
+                document.getElementById('game-container').appendChild(reward);
+                rewards.push(reward);
+            }
+        }
+
+        function createStars() {
+            const gameContainer = document.getElementById('game-container');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'stars';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDuration = 0.5 + Math.random() * 5 + 's';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                gameContainer.appendChild(star);
+            }
+        }
+
+        function movePlayer(e) {
+            const speed = 10;
+            switch(e.key) {
+                case 'ArrowUp': playerPos.y = Math.max(0, playerPos.y - speed); break;
+                case 'ArrowDown': playerPos.y = Math.min(560, playerPos.y + speed); break;
+                case 'ArrowLeft': playerPos.x = Math.max(0, playerPos.x - speed); break;
+                case 'ArrowRight': playerPos.x = Math.min(760, playerPos.x + speed); break;
+            }
+            updatePlayerPosition();
+        }
+
+        function gameLoop() {
+            checkCollisions();
+        }
+
+        function checkCollisions() {
+            obstacles.forEach(obstacle => {
+                if (isColliding(playerPos, obstacle.getBoundingClientRect())) {
+                    showQuiz();
+                }
+            });
+
+            rewards.forEach((reward, index) => {
+                if (isColliding(playerPos, reward.getBoundingClientRect())) {
+                    score += 10;
+                    document.getElementById('score').textContent = `Score: ${score}`;
+                    reward.remove();
+                    rewards.splice(index, 1);
+                    if (rewards.length === 0) {
+                        alert('Mission Accomplished! You saved the galaxy!');
+                        endGame();
+                    }
+                }
+            });
+        }
+
+        function isColliding(playerPos, elementRect) {
+            const playerRect = {
+                left: playerPos.x,
+                right: playerPos.x + 40,
+                top: playerPos.y,
+                bottom: playerPos.y + 40
+            };
+            return !(playerRect.right < elementRect.left || 
+                     playerRect.left > elementRect.right || 
+                     playerRect.bottom < elementRect.top || 
+                     playerRect.top > elementRect.bottom);
+        }
+
+        const quizQuestions = [
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: "Jupiter"
+            },
+            {
+                question: "Which element is most abundant in the universe?",
+                options: ["Oxygen", "Carbon", "Helium", "Hydrogen"],
+                answer: "Hydrogen"
+            },
+            {
+                question: "What is the name of the galaxy we live in?",
+                options: -->
