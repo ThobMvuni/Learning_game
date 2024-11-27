@@ -62,9 +62,9 @@ python manage.py runserver
 ## 6. Open in Browser:
 
 Navigate to http://127.0.0.1:8000 to start playing.
-Project Structure
-php
-Copy code
+## Project Structure
+
+
 math-mastery-game/
 │
 ├── game/                   # Django app for the game
@@ -82,6 +82,7 @@ math-mastery-game/
 ├── db.sqlite3              # SQLite database
 ├── manage.py               # Django management script
 └── requirements.txt        # Python dependencies
+
 Future Improvements
 Add a leaderboard to display top players.
 Include more math topics and difficulty levels.
