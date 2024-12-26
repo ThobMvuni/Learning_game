@@ -1,5 +1,9 @@
 # Learning_game
 
+![Logo](logo.png)
+
+<img src="logo.png" alt="Logo" width="200">
+
 # Math Mastery Game
 
 Math Mastery Game is an engaging and interactive learning app designed to help learners advance their mathematics skills in a fun and rewarding way. The app challenges players with math questions, and correct answers help their chosen avatar climb up a block tower.
